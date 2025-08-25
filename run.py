@@ -1310,7 +1310,7 @@ def main(folder_paths:list, name_filter:str, classifier, output_name:str):
 
         for pdb_file_path in pdb_file_paths:
 
-            if name_filter and name_filter not in pdb_file_path:
+            if name_filter and name_filter not in pdb_file_path: # default is None, so will not filter
                 continue
 
             pdb_filename = os.path.basename(pdb_file_path)
@@ -1328,8 +1328,9 @@ def main(folder_paths:list, name_filter:str, classifier, output_name:str):
 
             pae_filepath = None
             for f in pae_file_paths:
-                if complex_name in f and f"model_{model_num}" in f: 
+                if 'pae' in f and f"_model_{model_num}" in f: 
                     pae_filepath = f
+                    # print(f"Found PAE file: {pae_filepath}")
                     break
 
             if pae_filepath.split('.').pop() not in ['gz', 'xz', 'json']:
