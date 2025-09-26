@@ -52,6 +52,8 @@ aa_3c_to_1c = {
 }
 canonical_amino_acids = set(aa_3c_to_1c.values())
 
+random_three_models = []
+
 def get_jaccard_index(list_a, list_b):
     """
     Calculate the Jaccard index between two lists.
