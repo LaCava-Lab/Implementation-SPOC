@@ -764,7 +764,7 @@ def get_sequences(pdb_filepath:str)->dict:
             continue
         if(atom_line[13:16].strip() != 'N'):
             continue
-        chain = atom_line[20:22].strip()
+        chain = atom_line[20:22].strip() # B and C as chain identifiers 
         if chain != last_chain:
             sequences[chain] = ''
 
@@ -1213,6 +1213,32 @@ def summarize_interface_statistics(interfaces:dict) -> dict:
 
 
 
+def set_random_seed(seed: int = None):
+    """
+    set_random_seed sets the seed for random number generation.
+    A random seed between 0 and 10000 is generated and used.
+    
+    :param seed: int seed value to use (optional)
+    """ 
+    seed = random.randint(0, 10000)
+    random.seed(seed)
+    return seed
+
+def choose_random_3_models(models:list) -> list:
+    """
+        choose_random_3_models returns list of 3 randomly sampled models from a list of 5 models
+
+        :param models:list of 3 model identifiers
+    """ 
+    random.seed(curr_seed)
+
+    global random_three_models
+
+    random_three_models = random.sample(models, 3)
+    
+    return random_three_models
+
+
 def analyze_complex(complex_name:str, complexes:dict):
 
     try:
@@ -1226,7 +1252,7 @@ def analyze_complex(complex_name:str, complexes:dict):
             # all_data[complex_name] = f'ERROR: Only {len(models)} models were supplied for {complex_name}. We require at least 3 models per complex.'
             return complex_name, None
         if len(models) > 3: 
-            models = random.sample(models, 3)
+            models = choose_random_3_models(models)
             print(f"Found more than 3 models, randomly sampled 3 models {models}")
 
         aa_sequences = get_sequences(complexes[complex_name][models[0]][0])
@@ -1375,8 +1401,6 @@ def add_prefix_to_file_name(folder_path:str, prefix:str):
         os.rename(file_path, new_path)
 
     print(f"Added complex name as prefix to all PDB and JSON files in {folder_path}")
-
-
 
 def main(folder_paths:list, name_filter:str, classifier, output_name:str):
 
@@ -1539,6 +1563,8 @@ if __name__ == "__main__":
         print("No folders to analyze were provided. Script is terminating.")
         exit()
 
+    curr_seed = set_random_seed()
+    print(f"Using random seed {curr_seed}")
 
     start_message = """
 -------------------------------------------------------------------------------------------------------------------------
