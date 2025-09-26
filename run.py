@@ -13,7 +13,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import h5py
+import pickle
 from scipy.spatial.distance import cosine, euclidean
+from typing import Dict, List, Tuple, Any
 
 from joblib import load
 
@@ -540,6 +542,54 @@ def get_filepaths_for_complex(path:str, complex_name:str, pattern:str = '*') -> 
     glob_str = os.path.join(path, complex_name + pattern)
     return sorted(glob.glob(glob_str))
 
+def get_pickle_data_all_models(folder_path: str) -> Dict[int, Tuple[Any, Any]]:
+    """ 
+    Search for pickle files of selected model numbers in a flat folder, 
+    load them, and return a dictionary mapping model_num -> (ptm_score, iptm_score).
+
+    :param folder_path: path to the folder containing result_*.pkl files
+    # :param model_list: list of selected model numbers (ints) 
+    :return: dict containing data extracted from pickle file for each model 
+    """
+    results = {}
+    global random_three_models
+
+    expected_files = {
+        f"result_model_{m}_multimer_v3_pred_0.pkl": m
+        for m in random_three_models
+    }
+
+    for file_name in os.listdir(folder_path):
+        if file_name in expected_files:
+            model_num = expected_files[file_name]
+            result_file_path = os.path.join(folder_path, file_name)
+
+            try:
+                pkl_data = read_pkl_file(result_file_path)
+
+                ptm_score = pkl_data.get("ptm").item()
+                iptm_score = pkl_data.get("iptm").item()
+
+                results[model_num] = (ptm_score, iptm_score)
+
+            except Exception as e:
+                print(f"Error processing {result_file_path}: {e}")
+                results[model_num] = (None, None)
+
+    return results
+
+
+def get_curr_model_num(json_filepath) -> int:
+    """
+        Returns the Alphafold model number from an input filestring as an int
+
+        :param json_filepath: string representing the JSON filename from which to extract the model number
+    """ 
+
+    if "model_" not in json_filepath: return 0
+
+    model_num = int(re.findall(r'model_\d+', json_filepath)[0].replace("model_", ''))
+    return model_num
 
 def get_data_from_json_file(json_filepath) -> list:
     """
@@ -561,26 +611,29 @@ def get_data_from_json_file(json_filepath) -> list:
     else:
         raise ValueError('pAE file with invalid extension cannot be analyzed. Only valid JSON files can be analyzed.')
 
+    # for ptm and iptm in pickle files
+    pickle_data = get_pickle_data_all_models(os.path.dirname(json_filepath))
+
     #read pae file in as text
     try:
         file_text = scores_file.read()
-        pae_index = file_text.find('"pae":')
-        ptm_index = file_text.find('"ptm":')
-        iptm_index = file_text.find('"iptm":')
+        pae_index = file_text.find('"predicted_aligned_error":')
         scores_file.close()
     except:
         print("Could not parse json_filepath")
         raise ValueError('Could not parse JSON file')
     
     #Transform string representing 2d array into a 1d array of strings (each string is 1 pAE value). We save time by not unecessarily converting them to numbers before we use them.
-    pae_data = file_text[pae_index + 6:file_text.find(']]', pae_index) + 2].replace('[','').replace(']','').split(',')
+    pae_data = file_text[pae_index + 26:file_text.find(']]', pae_index) + 2].replace('[','').replace(']','').split(',')
 
     if len(pae_data) != int(math.sqrt(len(pae_data)))**2:
         #all valid pAE files consist of an N x N matrice of scores
         raise ValueError('pAE values could not be parsed from files')
-    
-    ptm = float(file_text[ptm_index + 6:file_text.find(',', ptm_index)])
-    iptm = float(file_text[iptm_index + 7:].replace('}', ''))
+
+    model_num = get_curr_model_num(json_filepath)
+    ptm = pickle_data.get(model_num, (None, None))[0]
+    iptm = pickle_data.get(model_num, (None, None))[1]
+
     return pae_data, ptm, iptm
 
 
