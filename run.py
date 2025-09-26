@@ -95,7 +95,6 @@ def cosine_similarity(v1, v2):
     return cosine_sim
 
 
-
 def initialize_databases():
     global uniprot_id_map, uniprot_id_to_entry_map, uniprot_seq_map, deep_loc2_vectors
     global af_missense, embeddings, depmap_data, crispr_ko_data, biogrid_data, co_expression_data
@@ -531,7 +530,6 @@ def get_seed_num(filename) -> int:
     return seed
 
 
-
 def get_filepaths_for_complex(path:str, complex_name:str, pattern:str = '*') -> list:
     """
         Helper methdof for returning a list of filepaths (strs) that match the specified GLOB pattern
@@ -543,6 +541,14 @@ def get_filepaths_for_complex(path:str, complex_name:str, pattern:str = '*') -> 
 
     glob_str = os.path.join(path, complex_name + pattern)
     return sorted(glob.glob(glob_str))
+
+def read_pkl_file(file_path):
+    """ 
+        Returns the required data from a pickle file as a dict"""
+    with open(file_path, 'rb') as file:
+        pickle_data = pickle.load(file)
+    return pickle_data
+
 
 def get_pickle_data_all_models(folder_path: str) -> Dict[int, Tuple[Any, Any]]:
     """ 
@@ -592,6 +598,7 @@ def get_curr_model_num(json_filepath) -> int:
 
     model_num = int(re.findall(r'model_\d+', json_filepath)[0].replace("model_", ''))
     return model_num
+
 
 def get_data_from_json_file(json_filepath) -> list:
     """
@@ -1214,7 +1221,6 @@ def summarize_interface_statistics(interfaces:dict) -> dict:
     return summary_stats
 
 
-
 def set_random_seed(seed: int = None):
     """
     set_random_seed sets the seed for random number generation.
@@ -1222,6 +1228,7 @@ def set_random_seed(seed: int = None):
     
     :param seed: int seed value to use (optional)
     """ 
+    # Or set to any fixed integer for reproducibility for the run
     seed = random.randint(0, 10000)
     random.seed(seed)
     return seed
@@ -1403,6 +1410,7 @@ def add_prefix_to_file_name(folder_path:str, prefix:str):
         os.rename(file_path, new_path)
 
     print(f"Added complex name as prefix to all PDB and JSON files in {folder_path}")
+
 
 def main(folder_paths:list, name_filter:str, classifier, output_name:str):
 
