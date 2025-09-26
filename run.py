@@ -1285,6 +1285,43 @@ def analyze_complexes(complexes):
 
     return all_data, errored_complexes
 
+def get_complex_name(folder_path:str) -> str:
+    """
+    Concatenates and gets the complex name from a chain_id_map.json file.
+
+    :param cim_filepath: Path to the chain_id_map.json file.
+    :return: Complex name.
+    """
+    chain_id_map_file_path = os.path.join(folder_path, 'msas', 'chain_id_map.json') # should give path foler_path/msa/chain_id_map.json
+    if not os.path.exists(chain_id_map_file_path):
+        raise FileNotFoundError(f"chain_id_map.json not found at {chain_id_map_file_path}")
+
+    with open(chain_id_map_file_path, 'r') as cim_file:
+        chain_id_map = json.load(cim_file)
+
+        desc_chain_A = chain_id_map.get("A", {}).get("description", "A")
+        desc_chain_B = chain_id_map.get("B", {}).get("description", "B")
+
+        return f"{desc_chain_A}_{desc_chain_B}"
+    
+def add_prefix_to_file_name(folder_path:str, prefix:str):
+    """
+    Adds a prefix to all PDB and JSON files in the specified folder.
+
+    :param folder_path: Path to the folder containing the all files.
+    :param prefix: Prefix -> the complex name, to add to the filenames.
+    """
+    pdb_file_paths = glob.glob(os.path.join(folder_path, '*.pdb')) + glob.glob(os.path.join(folder_path, '*.pdb.??'))
+    pae_file_paths = glob.glob(os.path.join(folder_path, '*.json')) + glob.glob(os.path.join(folder_path, '*.json.??'))
+
+    for file_path in pdb_file_paths + pae_file_paths:
+        dir_name = os.path.dirname(file_path)
+        base_name = os.path.basename(file_path)
+        new_file_name = prefix + base_name
+        new_path = os.path.join(dir_name, new_file_name)
+        os.rename(file_path, new_path)
+
+    print(f"Added complex name as prefix to all PDB and JSON files in {folder_path}")
 
 
 
@@ -1326,11 +1363,14 @@ def main(folder_paths:list, name_filter:str, classifier, output_name:str):
             if '_unrelaxed_' in pdb_filename:
                 complex_name = pdb_filename.split('_unrelaxed_')[0]
 
+            if complex_name == "" or complex_name is None:
+                complex_name = get_complex_name(args.folder_paths[0]) # input folder path
+                add_prefix_to_file_name(args.folder_paths[0], (complex_name +'_') )
+
             pae_filepath = None
             for f in pae_file_paths:
-                if 'pae' in f and f"_model_{model_num}" in f: 
+                if 'pae' in f and f"_model_{model_num}_" in f: 
                     pae_filepath = f
-                    # print(f"Found PAE file: {pae_filepath}")
                     break
 
             if pae_filepath.split('.').pop() not in ['gz', 'xz', 'json']:
