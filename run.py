@@ -1476,7 +1476,13 @@ def main(folder_paths:list, name_filter:str, classifier, output_name:str):
 
         print(f"Errors occurred for {len(errored_complexes)} complexes.")
         if len(errored_complexes) > 0:
-            final_error_csv_path = folder_path.rstrip('/') + "_errored_complexes.csv"
+            # Create SPOC_outputs directory if it doesn't exist
+            output_dir = "SPOC_outputs"
+            os.makedirs(output_dir, exist_ok=True)
+            
+            folder_name = folder_path.rstrip('/').split('/').pop()
+            final_error_csv_path = os.path.join(output_dir, folder_name + "_errored_complexes.csv")
+            
             # Convert list to DataFrame
             df = pd.DataFrame(errored_complexes, columns=['complex_name'])
             # Write DataFrame to CSV
@@ -1527,12 +1533,16 @@ def main(folder_paths:list, name_filter:str, classifier, output_name:str):
         final_df = pd.DataFrame(final_datalist)
         final_df = final_df[columns]
 
+        # Create SPOC_outputs directory if it doesn't exist
+        output_dir = "SPOC_outputs"
+        os.makedirs(output_dir, exist_ok=True)
+        
         folder_name = folder_path.rstrip('/').split('/').pop()
-        final_csv_path = folder_name + "_SPOC_analysis.csv"
+        final_csv_path = os.path.join(output_dir, folder_name + "_SPOC_analysis.csv")
         if output_name: 
             if not output_name.endswith('.csv'):
                 output_name += '.csv'
-            final_csv_path = output_name
+            final_csv_path = os.path.join(output_dir, output_name)
   
         final_df.sort_values(by=['spoc_score'], ascending=False, inplace=True)
         final_df.to_csv(final_csv_path, index=None)
