@@ -6,6 +6,7 @@ For more information, please see the associated publication: Predictomes, A clas
 
 This code was developed and tested on a Linux system.
 
+**Link to orginal repo:** https://github.com/walterlab-HMS/SPOC
 
 # Using SPOC on Linux
 
@@ -109,7 +110,10 @@ See all available options by running:
 ```bash
 python3 run.py --help
 ```
-
+### To run multiple complexes saved in one folder
+```bash
+python3 run.py my_afm_predictions_folder_1 my_afm_predictions_folder_2 my_afm_predictions_folder_3 .....
+```
 ---
 
 ## Step 4: Understanding SPOC Outputs
@@ -162,4 +166,5 @@ After running SPOC, the output files will be generated in the location where you
 - If you encounter any errors, check the console output to help debug any issues.
 
 ---
+
 
