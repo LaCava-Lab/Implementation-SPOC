@@ -6,6 +6,7 @@ For more information, please see the associated publication: Predictomes, A clas
 
 This code was developed and tested on a Linux system.
 
+**Link to orginal repo:** https://github.com/walterlab-HMS/SPOC
 
 # Using SPOC on Linux
 
@@ -87,19 +88,19 @@ my_afm_predictions_folder/
 │-- DONS_HUMAN__MCM3_HUMAN__1374aa_unrelaxed_rank_003_alphafold2_multimer_v3_model_4_seed_000.pdb.xz
 
 ```
-
+### To run single complex saved in one folder:
 ```bash
 python3 run.py my_afm_predictions_folder
 ```
-
+### To run multiple complexes, each in one folder:
 ```bash
-python3 run.py my_afm_predictions_folder_01 my_afm_predictions_folder_02
+python3 run.py my_afm_predictions_folder_1 my_afm_predictions_folder_2 my_afm_predictions_folder_3 .....
 ```
-
+### To run folder/complexes with wildcard or numbered files/folders:
 ```bash
 python3 run.py my_afm_predictions_folder_0?
 ```
-
+### To run multiple folders/complexes with wildcard and optional filters:
 ```bash
 python3 run.py my_afm_predictions_folder_0? --name_filter MCM --output only_mcm_complexes
 ```
@@ -162,4 +163,6 @@ After running SPOC, the output files will be generated in the location where you
 - If you encounter any errors, check the console output to help debug any issues.
 
 ---
+
+
 
