@@ -15,7 +15,7 @@ This code was developed and tested on a Linux system.
 To clone the SPOC repository, use the following command:
 
 ```bash
-git clone https://github.com/walterlab-HMS/SPOC.git
+git clone https://github.com/LaCava-Lab/SPOC
 ```
 
 Navigate into the cloned directory:
