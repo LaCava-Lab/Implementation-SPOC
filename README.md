@@ -17,6 +17,10 @@ To clone the SPOC repository, use the following command:
 ```bash
 git clone https://github.com/LaCava-Lab/SPOC
 ```
+or
+```bash
+git clone git@github.com:LaCava-Lab/SPOC.git
+```
 
 Navigate into the cloned directory:
 
@@ -57,10 +61,10 @@ cd SPOC
 
 ## Step 2: Create SPOC Conda Environment to Load Necessary Dependencies
 
-1. **Create the environment:**
+1. **Create the environment (while in SPOC directory):**
 
    ```bash
-   conda env create -f SPOC/environment.yml
+   conda env create -f environment.yml
    ```
 
 2. **Activate the SPOC environment:**
