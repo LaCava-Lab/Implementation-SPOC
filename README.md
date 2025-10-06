@@ -21,8 +21,6 @@ In the original classifier, the pTM, ipTM, and PAE scores were extracted from JS
 
  - Improved the random selection process for choosing 3 out of 5 models. If needed, users can now set a fixed random seed to ensure reproducibility of the SPOC algorithm results.
 
----
-
 # Using SPOC on Little_beast
 ## Step 1: Creating the environment
 1. Nagivate to the SPOC directory
@@ -204,6 +202,7 @@ After running SPOC, the output files will be generated in the location where you
 - If you encounter any errors, check the console output to help debug any issues.
 
 ---
+
 
 
 
