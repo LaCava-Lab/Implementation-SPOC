@@ -1,12 +1,25 @@
 # About
 
-This is a code repository for SPOC (Structure Prediction and Omics informed Classifier), a random forest classifier designed to evaluate AlphaFold multimer predictions (AF-M v2.3) of binary human protein pairs to assess their structural plausibility and consistency with experimental omics data.
+This is a code repository for Modified version of the SPOC (Structure Prediction and Omics informed Classifier), a random forest classifier designed to evaluate AlphaFold-Multimer (AF-M v2.3, custom version running on the Little Beast server) iutputted on the custom version on server little beast of binary human protein pairs to assess their structural plausibility and consistency with experimental omics data.
 
 For more information, please see the associated publication: Predictomes, A classifier-curated database of AlphaFold-modeled protein-protein interactions
 
 This code was developed and tested on a Linux system.
 
 **Link to orginal repo:** https://github.com/walterlab-HMS/SPOC
+
+# Changes in the Modified SPOC
+1. Changed method for retrieving complex names
+The original classifier extracts the complex name from the file name of the AF-M outpu files. However, the AF-M implementation on Little Beast server does not follow the default naming convention, hence, the modified version of SPOC retrieves the complex name by concatenating the protein IDs in the chain_id_map.json file located in the msas folder of the AF-M output.
+
+2. Changed path to extract AF-M metrics
+In the original classifier, the pTM, ipTM, and PAE scores were extracted from JSON files in the AF-M output. However, in the AF-M implementation on Little Beast, only the PAE files were available in JSON file. After minor adjustments (such as updating the PAE score indices) and adding functions to extract pTM and ipTM values from the pickle files of randomly selected models, all required AF-M metrics (pTM, ipTM, and PAE) were successfully retrieved and used for the SPOC score calculation.
+
+3. Other minor changes
+
+ - Modified classifier output file paths so that all SPOC output CSV files are stored in a dedicated folder.
+
+ - Improved the random selection process for choosing 3 out of 5 models. If needed, users can now set a fixed random seed to ensure reproducibility of the SPOC algorithm results.
 
 # Using SPOC on Linux
 
