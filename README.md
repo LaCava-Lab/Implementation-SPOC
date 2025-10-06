@@ -77,7 +77,7 @@ cd SPOC
 
 ## Step 3: Run SPOC to Analyze Predictions
 
-SPOC is trained specifically to analyze complexes containing pairs of human proteins run in at least three AlphaFold-Multimer models. The program will ignore any complexes that do not meet the above criteria. The program will attempt to use all available CPUs in parallel to minimize runtime. The program does not require specific file naming formats (besides the words unrelaxed andthe alphafold model number used in the filename), as it extracts sequences from the PDB files directly to determine which proteins are in which files and uses Protein BLAST to match sequences to UniProt IDs.
+SPOC is trained specifically to analyze complexes containing pairs of human proteins run in at least three AlphaFold-Multimer models. The program will ignore any complexes that do not meet the above criteria. The program will attempt to use all available CPUs in parallel to minimize runtime. The program does not require specific file naming formats (besides the words unrelaxed and the alphafold model number used in the filename), as it extracts sequences from the PDB files directly to determine which proteins are in which files and uses Protein BLAST to match sequences to UniProt IDs.
 
 ```
 Example folder
@@ -167,6 +167,7 @@ After running SPOC, the output files will be generated in the location where you
 - If you encounter any errors, check the console output to help debug any issues.
 
 ---
+
 
 
 
