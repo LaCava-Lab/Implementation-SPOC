@@ -32,8 +32,6 @@ cd /mnt/scratch/SPOC
 conda env create -f environment.yml -n <user_name>_spoc_venv
 ```
 ## Step 2: Using SPOC
-
-# Using SPOC on Linux
 Navigate to your home directory or directory where you want to output folder (which contains output files) to be saved
 1. Activate the spoc environment
 ```bash
@@ -44,6 +42,7 @@ conda activate <username>_spoc_venv
 python3 /mnt/scratch/SPOC/run.py /mnt/storage/<user_name>/<path>/<afm_output_folder>
 ```
 
+# Using SPOC on Linux
 ## Cloning the Repository
 
 To clone the SPOC repository, use the following command:
@@ -201,6 +200,7 @@ After running SPOC, the output files will be generated in the location where you
 - If you encounter any errors, check the console output to help debug any issues.
 
 ---
+
 
 
 
