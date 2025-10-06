@@ -1,6 +1,6 @@
 # About
 
-This is a code repository for Modified version of the SPOC (Structure Prediction and Omics informed Classifier), a random forest classifier designed to evaluate AlphaFold-Multimer (AF-M v2.3, custom version running on the Little Beast server) iutputted on the custom version on server little beast of binary human protein pairs to assess their structural plausibility and consistency with experimental omics data.
+This is a code repository for **Modified version of the SPOC** (Structure Prediction and Omics informed Classifier), a random forest classifier designed to evaluate AlphaFold-Multimer (AF-M v2.3, custom version running on the Little Beast server) iutputted on the custom version on server little beast of binary human protein pairs to assess their structural plausibility and consistency with experimental omics data.
 
 For more information, please see the associated publication: Predictomes, A classifier-curated database of AlphaFold-modeled protein-protein interactions
 
@@ -180,6 +180,7 @@ After running SPOC, the output files will be generated in the location where you
 - If you encounter any errors, check the console output to help debug any issues.
 
 ---
+
 
 
 
